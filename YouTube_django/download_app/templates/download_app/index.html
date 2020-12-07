@@ -1,0 +1,58 @@
+{% extends 'download_app/base.html' %}
+{% block content %}
+
+
+      
+   
+
+    <center>
+      <div class="container">
+        <div class="tm-search-form-container">
+          <form method="POST" class="form-inline tm-search-form">
+            <center>
+              <div class="form-group tm-search-box">
+                {% csrf_token %}
+                <input type="text" name="name" class="form-control tm-search-input" placeholder="Type your keyword ...">
+                <input type="submit" value="Search" class="form-control tm-search-submit">
+              </div>
+            </center>
+          </form>
+        </div>
+      </center>
+      
+    <div class="videosContent">
+      {% for video in videos %}
+      <div class=" tm-albums-container  ">
+        <div class="col-sm-6 col-12 col-md-6 col-lg-3 col-xl-3 tm-album-col">
+          <figure class="effect-sadie">
+            <img src="{{ video.thumbnail }}" alt="Image" class="img-fluid">
+            <div class="imgHoverEfect">
+              <h3 class="img-video-title">{{ video.title }}</h3>
+              <div class="imgVideoButtons">
+                <a type="button" href="{{ video.url }}" class="tm-bg-pink tm-text-white tm-buy">Go to the YouTube</a>
+                <a type="button" href="{% url 'view_video' video.id %}" class="tm-bg-pink tm-text-white tm-buy">Go to download</a>
+              </div>
+            </div>
+          </figure>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+
+
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="tm-tag-line">
+            <h2 class="tm-tag-line-title">Music is your powerful energy.</h2>
+          </div>
+        </div>
+      </div>
+
+      
+    </div> <!-- .container -->
+
+
+{% endblock content %}
+
+ 

@@ -1,0 +1,31 @@
+{% extends 'download_app/base.html' %}
+{% block content %}
+<div class="todo-list">
+    <form method="post" class="register-form">
+        {% csrf_token %}
+        <h1>Login Form</h1>
+        <br>
+
+        <table style="width:50% ; margin: auto"  class="register-table">
+          <tr>
+            <td>Username</td>
+            <td>{{form.username}}</td>
+          </tr>
+          <tr>
+            <td>Password</td>
+            <td>{{form.password}}</td>
+          </tr>
+        </table>
+
+        <br>
+
+        <button class="btn btn-info" type="submit">Sign In</button>
+
+    </form>
+    <div class="border-top pt-3 login-form-link">
+        <small class="text-muted">
+            Have no account yet? <a class='ml-2' id="sign_up" href="{% url 'register' %}">Sign Up</a>
+        </small>
+    </div>
+</div> 
+{% endblock content %}

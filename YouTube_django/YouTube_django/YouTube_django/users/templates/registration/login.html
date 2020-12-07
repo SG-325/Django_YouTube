@@ -1,0 +1,21 @@
+{% extends 'download_app/base.html' %}
+{% block content %}
+
+    <form method="post">
+        {% csrf_token %}
+        <h3>Login Form</h3>
+        <br>
+        <h5>Username: {{form.username}}</h5>
+        <h5>Password: {{form.password}}</h5>
+        <br>
+
+        <button class="btn btn-info" type="submit">Sign In</button>
+
+    </form>
+        
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            Have no account yet? <a class='ml-2' id="sign_up" href="{% url 'register' %}">Sign Up</a>
+        </small>
+    </div>
+{% endblock content %}

@@ -1,0 +1,28 @@
+{% extends 'download_app/base.html' %}
+	{% block content %}
+	<div class="todo-list">
+		<form method="POST" enctype="multipart/form-data"  class="register-form">
+			{% csrf_token %}
+			<h1>Update Profile</h1>
+			<br>
+		
+			<table style="width:50%;margin: auto;"  class="register-table">
+				<tr>
+	            	<td>Name:</td>
+	            	<td>{{form.first_name}}</td>
+	          	</tr>
+	          	<tr>
+	            	<td>Surname:</td>
+	            	<td>{{form.second_name}}</td>
+	          	</tr>
+
+		    </table>
+		    
+			<br><br>
+
+			<div class="item-row">
+				<a href="{% url 'profile_update' %}"><button class="btn btn-success" type="submit" name="Update Profile">Update</button></a>
+			</div>
+		</form>
+	</div>
+	{% endblock content %}

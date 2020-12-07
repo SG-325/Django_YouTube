@@ -1,0 +1,16 @@
+{% extends 'download_app/base.html' %}
+{% block content %}
+	
+	<form action="/view_video/" method="POST">
+		<h3>{{video.title}}</h3>
+		<div>
+			<center>
+				<iframe width="550" height="310" src="https://www.youtube.com//embed/{{video.id}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			</center>
+		</div>
+		<div>
+			<a style="color: green;" type="button" target="_blank" href="{% url 'download' %}" download="{{video.title}}.mp3"><i class="fa fa-download"></i> Download</a>
+		</div>
+​	</form>
+​
+{% endblock content%}

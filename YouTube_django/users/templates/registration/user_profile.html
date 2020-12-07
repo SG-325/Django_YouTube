@@ -1,0 +1,47 @@
+{% extends 'download_app/base.html' %}
+{% block content %}
+
+
+
+	<div class="todo-list">
+		<h1>Profile</h1>
+		<br>
+			
+		<table style="width:70%">
+			<tr>
+				<td>
+					<img src="{{profile.user_image.url}}" alt="*****" height="150" width="200">
+				</td>
+				<td>
+					<table style="width:100%">
+						<tr>
+			            	<td class="profil-label">Name:</td>
+			            	<td>{{profile.first_name}}</td>
+			          	</tr>
+			          	<tr>
+			            	<td class="profil-label">Surname:</td>
+			            	<td>{{profile.second_name}}</td>
+			          	</tr>
+		            </table>
+				</td>
+          	</tr>	
+        </table>
+        
+        <br>
+		
+		<div class="item-row">
+			<a href="{% url 'profile_update' %}"><button class="btn btn-success" type="submit" name="Update Profile">Update</button></a>
+		</div>
+		
+		<br>
+    <div class="profil-links-content">
+		{% for video in videos %}
+			<div class="profil-link">
+				<a href="{{video.url}}">{{video.name}} - {{video.count}} time</a>
+			</div>
+		{% endfor %}
+	</div>
+	</div>
+
+{% endblock %}
+

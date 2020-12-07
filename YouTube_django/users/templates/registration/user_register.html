@@ -1,0 +1,32 @@
+{% extends 'download_app/base.html' %}
+	{% block content %}
+		<div class="todo-list">
+		<form method="POST" class="register-form" >
+			{% csrf_token %}
+	        <h1>Register Form</h1>
+	      	<br>
+	        <table style="width:50%;margin:auto" class="register-table">
+			  <tr>
+			    <td>Username</td>
+			    <td>{{form.username}}</td>
+			  </tr>
+			  <tr>
+			    <td>Email</td>
+			    <td>{{form.email}}</td>
+			  </tr>
+			  <tr>
+			    <td>Password 1</td>
+			    <td>{{form.password1}}</td>
+			  </tr>
+			  <tr>
+			    <td>Password 2</td>
+			    <td>{{form.password2}}</td>
+			  </tr>
+			</table>
+			<br>
+	        <button class="btn btn-info" type="submit">Create</button>
+
+		</form>
+	</div>
+		
+	{% endblock %}

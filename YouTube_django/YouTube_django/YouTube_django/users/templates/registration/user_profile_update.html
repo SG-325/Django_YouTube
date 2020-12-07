@@ -1,0 +1,18 @@
+{% extends 'download_app/base.html' %}
+	{% block content %}
+
+		<form method="POST" enctype="multipart/form-data">
+			{% csrf_token %}
+			<h3>Update Profile</h3><br>
+			<strong>Name: {{form.first_name}}</strong>
+			<br>
+			<strong>Surname: {{form.second_name}}</strong>
+			<br>
+			<strong>Profile image: <br> {{form.user_image}}</strong>
+			<br><br>
+
+			<div class="item-row">
+				<a href="{% url 'profile_update' %}"><button class="btn btn-success" type="submit" name="Update Profile">Update</button></a>
+			</div>
+		</form>
+	{% endblock content %}
