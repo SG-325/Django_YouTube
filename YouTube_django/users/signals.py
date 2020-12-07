@@ -23,4 +23,3 @@ def update_profile(sender, instance, created, **kwargs):
         print("updated")
 
 
-post_save.connect(update_profile, sender=User)

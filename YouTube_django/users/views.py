@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, ProfileUpdate
-from django.contrib import messages
 from download_app.models import NewMP3
 from .models import Profile
 import os
@@ -63,21 +62,9 @@ def profile_update(request):
     if request.method == "POST":
         form = ProfileUpdate(request.POST, instance=profile)
         if form.is_valid():
-            form.save()
-            print(request)
-            if request.FILES.get('user_image', None) != None:
-                # try:
-                #     os.remove(profile.user_image.url)
-                # except Exception as e:
-                #     print('Exception in removing old profile image: ', e)
-                profile.user_image = request.FILES['user_image']
-                profile.save()
-            return redirect("user_profile")
-                    
+            form.save()                    
 
         return redirect('user_profile')
-
-    
 
     return render(request, 'registration/user_profile_update.html', {'form': form})
 
