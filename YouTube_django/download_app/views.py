@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .models import NewMP3
-from .forms import MP3Form
 from django.conf import settings
 from pytube import YouTube
 import youtube_dl
@@ -56,7 +55,7 @@ def view_video(request, pk):
             break
 
 
-    video_obj  = NewMP3.objects.create(name=video['title'], url=video['url'], user=request.user)
+    video_obj = NewMP3.objects.create(name=video['title'], url=video['url'], user=request.user)
 
     title_str = video['title']
     s = ['"', "'", "&", ";", ":"]

@@ -11,8 +11,7 @@ class UserRegisterForm(UserCreationForm):
 
 
 
-class ProfileUpdate(forms.ModelForm):
-	
+class ProfileUpdate(forms.ModelForm):	
 	class Meta:
 		model = Profile
 		fields = ['first_name','second_name']
