@@ -3,9 +3,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .models import NewMP3
 from django.conf import settings
+from isodate import parse_duration
 from pytube import YouTube
 import youtube_dl
 import os
+import time
 import requests
 import json
 
@@ -16,9 +18,19 @@ videos = []
 def home(request):
     global videos
     videos.clear()
+
+    if os.path.exists('download_app'):
+        os.chdir('download_app/static/download_app/songs')
+    # os.chdir(f"{os.getcwd()}/download_app/static/download_app/songs")
+
+    while os.listdir():
+      file = f"{os.getcwd()}/{os.listdir()[0]}"
+      os.remove(file)
+
     
     if request.method == 'POST':
         search_url = 'https://www.googleapis.com/youtube/v3/search'
+        video_url = 'https://www.googleapis.com/youtube/v3/videos'
 
         search_params = {
             'part':'snippet',
@@ -29,13 +41,34 @@ def home(request):
         }
         
         response = requests.get(search_url, params=search_params)
+        
         results = response.json()['items']
+
+
+        video_ids = []
+
+        for result in results:
+            video_ids.append(result['id']['videoId'])
+
+
+
+        video_params = {
+            'part':'snippet,contentDetails',
+            'key':settings.YOUTUBE_DATA_API_KEY,
+            'id':','.join(video_ids)
+        }
+
+        response = requests.get(video_url, params=video_params)
+        
+        results = response.json()['items']
+
 
         for result in results:
             video_data = {
                 'title':result['snippet']['title'],
-                'id':result['id']['videoId'],
-                'url':F"https://www.youtube.com/watch?v={result['id']['videoId']}",
+                'id':result['id'],
+                'url':F"https://www.youtube.com/watch?v={result['id']}",
+                'duration':parse_duration(result['contentDetails']['duration']).total_seconds(),
                 'thumbnail':result['snippet']['thumbnails']['high']['url'],
             }
             videos.append(video_data)
@@ -44,6 +77,9 @@ def home(request):
         
     return render(request,'download_app/index.html', {'videos':videos})
     
+
+
+
 
 @login_required(login_url = "login")
 def view_video(request, pk):
@@ -58,18 +94,23 @@ def view_video(request, pk):
     video_obj = NewMP3.objects.create(name=video['title'], url=video['url'], user=request.user)
 
     title_str = video['title']
-    s = ['"', "'", "&", ";", ":"]
+    s = ['"', "'", "&", ";", ":", " ", "-", "|"]
    
-    for i in range(len(title_str)):
-        if title_str[i] in s:
-            video['title'] = f"Audio"
-            break
+    for i in s:
+        while True:
+            index = title_str.find(i)
+            if index == -1:
+                break
+            else:
+                title_str = title_str[:index] +"_" + title_str[index+1:]
+    
+    video['title'] = title_str
 
     filename = f"{video['title']}.mp3"
 
     options = {
         'format': 'bestaudio/best',
-        # 'nocheckcertificate' : True,
+        'nocheckcertificate' : True,
         'outtmpl': filename,
         'postprocessors': [{
             'key':'FFmpegExtractAudio',
@@ -83,6 +124,42 @@ def view_video(request, pk):
 
     with youtube_dl.YoutubeDL(options) as ydl:
         ydl.download([video['url']])
-  
+
+    if request.POST.get('submit', False) == 'cut':
+
+        start_time = request.POST['time_start']
+        end_time = request.POST['time_end']
+        
+        if start_time == "":
+            start_time = "00:00:00"
+        
+        if end_time == "":
+            end_time = video['duration']
+
+        # index_1 = end_time.find(":")
+        # if index_1 != -1:
+        #     index_2 = end_time[index_1:].find(":")
+
+        # print("index_1 =", index_1)
+        # print("index_2 =", index_2)
+        
+        # elif len(end_time) == 8 and (int(end_time[:2])*3600 + int(end_time[3:5])*60 + int(end_time[6:])) > video['duration']:
+        #     end_time = video['duration']
+        
+        # elif len(end_time) <= 5:
+        #     index = end_time.find(":")
+        #     s = int(end_time[:index])*60 + int(end_time[index+1:])
+        #     if s >= video['duration']:
+        #         end_time = video['duration']
+        
+        # elif len(end_time) <= 2 and (int(end_time)) > video['duration']:
+        #     end_time = video['duration']
+
+
+        os.system(f"ffmpeg -i {video['title']}.mp3 -ss {start_time} -t {end_time} {video['title']}_cut.mp3")
+        os.remove(f"{video['title']}.mp3")
+        os.rename(f"{video['title']}_cut.mp3", f"{video['title']}.mp3")
+
+
     return render(request,'download_app/video_view.html', {'video':video})
 

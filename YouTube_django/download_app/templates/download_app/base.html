@@ -79,9 +79,25 @@ http://www.tooplate.com/view/2101-insertion
             </nav>
           </div>
         </div>
+        <center>
+          <div class="row">
+            <div class="col-md-12">
+              {% if messages %}
+                {% for message in messages %}
+                  <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              {% endif %}
+            </div>
+          </div>
+        </center>
       </div>
     </div>
 
+
+    
+      
 
       {% block content %}
       {% endblock content %}

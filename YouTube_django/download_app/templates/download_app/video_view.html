@@ -1,14 +1,37 @@
 {% extends 'download_app/base.html' %}
 {% block content %}
 <div class="todo-list">
-	<form action="/view_video/" method="POST">
+	<form method="POST">
+		{% csrf_token %}
 		<div class="video-content">
 				<iframe width="550" height="310" src="https://www.youtube.com//embed/{{video.id}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 		</div>
 		<div class="video-name-content">
 			<h2>{{video.title}}</h2>
-			<div>
-				<a  href="/static/download_app/songs/{{video.title}}.mp3" download="{{video.title}}.mp3"><i class="fa fa-download"></i> Download</a>
+			<div class="video-input">
+				<table style="width:85%">
+					<tr>
+						<td><h4>Start Time:</h4></td>
+						<td><input type="text" name="time_start" class="time" placeholder="hh:mm:ss"></td>
+					</tr>
+					<tr>
+						<td><h4>End Time:</h4></td>
+						<td><input type="text" name="time_end" class="time" placeholder="hh:mm:ss"></td>
+					</tr>
+				</table>
+			</div>
+			
+			<div class="video-download">
+				<table style="width:100%">
+					<tr>
+						<td>
+							<button type="submit" name="submit" value="cut" class="btn btn-success"><i class='fas fa-cut'></i> Cut video <i class='fas fa-cut'></i></button>
+						</td>
+						<td>
+							<button type="submit" name="submit" value="download" class="btn btn-success"><a  href="/static/download_app/songs/{{video.title}}.mp3" download="{{video.title}}.mp3"><i class="fa fa-download"></i> Download</a></button>
+						</td>
+					</tr>
+				</table>
 			</div>
 		</div>
 ​	</form>

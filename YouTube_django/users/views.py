@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, ProfileUpdate
 from download_app.models import NewMP3
+from django.contrib import messages
 from .models import Profile
 import os
 
@@ -22,8 +23,12 @@ def user_register(request):
             if not user is None:
                 login(request,user)
 
+            messages.add_message(request, messages.SUCCESS, "User created successfully")
+
             return redirect("login")
-      
+        else:
+            messages.add_message(request, messages.SUCCESS, "Failed to create user. Please try again")
+
 
     form = UserRegisterForm()
     return render(request, 'registration/user_register.html', {'form': form})
@@ -41,13 +46,13 @@ def user_profile(request):
         k = True
 
         for i in list_video:
-            if video_1.name == i.name:
+            if video_1.url == i.url:
                 k = False
         if k:
             list_video.append(video_1)
 
         for video_2 in videos:
-            if video_1.name == video_2.name:
+            if video_1.url == video_2.url:
                 count += 1
 
         video_1.count = count
@@ -62,7 +67,8 @@ def profile_update(request):
     if request.method == "POST":
         form = ProfileUpdate(request.POST, instance=profile)
         if form.is_valid():
-            form.save()                    
+            form.save()
+            messages.add_message(request, messages.SUCCESS, "User profile updated.")                    
 
         return redirect('user_profile')
 

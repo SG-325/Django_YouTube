@@ -142,6 +142,12 @@ a:hover, a:focus, a.active {
     padding: 12px 20px;
 }
 
+.time {
+    font-weight: 300;
+    border-radius: 0;
+    padding: 5px 20px;
+}
+
 .form-control:focus {
     border-color: white;
     box-shadow: none;
@@ -214,22 +220,28 @@ a:hover, a:focus, a.active {
     display: inline-block;
     position: absolute;
     text-align: center;
-    top: 40%;
+    top: 15%;
     right: 4%;
 }
 .video-name-content h2{
     color: white;
 }
+.video-input{
+       margin-top: 10%;
+}
+.video-download {
+    margin-top: 10%;
+}
 .video-name-content a{
-    margin: auto;
-    background: #b35e6c;
+    /*margin: auto;
+    background: #b35e6c;*/
     text-decoration: none;
-    display: block;
-    border:1px solid rgba(0,0,0,85%);
-    width: 126px;
-    padding: 10px;
+    /*display: block;*/
+    /*border:1px solid rgba(0,0,0,85%);*/
+    /*width: 162px;*/
+    padding: 7px;
     color: white;
-    margin-top: 10px;
+    /*margin-top: 10px;*/
 }
 .my-second-page .tm-site-name{
     display: none;
@@ -258,6 +270,8 @@ a:hover, a:focus, a.active {
     border: 1px solid rgba(0,0,0,26%);
     background: #b35e6c;
     box-shadow: 1px 1px 10px silver;
+    color: white;
+
 }
 .update-form{
     color: white;
@@ -270,6 +284,13 @@ a:hover, a:focus, a.active {
 .update-form a{
     color: silver;
 }
+.alert{
+    margin-left: -954px;
+    padding: 70px;
+    font-size: 25px;
+
+}
+
 .tm-album-col {
     display: flex;
     justify-content: center;
