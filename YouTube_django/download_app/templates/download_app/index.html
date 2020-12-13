@@ -16,25 +16,26 @@
         </div>
       </center>
       
-    <div class="videosContent">
-      {% for video in videos %}
-      <div class=" tm-albums-container  ">
-        <div class="col-sm-6 col-12 col-md-6 col-lg-3 col-xl-3 tm-album-col">
-          <figure class="effect-sadie">
-            <img src="{{ video.thumbnail }}" alt="Image" class="img-fluid">
-            <div class="imgHoverEfect">
-              <h3 class="img-video-title">{{ video.title }}</h3>
-              <div class="imgVideoButtons">
-                <a type="button" href="{{ video.url }}" class="tm-bg-pink tm-text-white tm-buy">Go to the YouTube</a>
-                <a type="button" href="{% url 'view_video' video.id %}" class="tm-bg-pink tm-text-white tm-buy">Go to download</a>
+    <center>
+      <div class="videosContent">
+        {% for video in videos %}
+        <div class=" tm-albums-container  ">
+          <div class="col-sm-6 col-12 col-md-6 col-lg-3 col-xl-3 tm-album-col">
+            <figure class="effect-sadie">
+              <img src="{{ video.thumbnail }}" alt="Image" class="img-fluid">
+              <div class="imgHoverEfect">
+                <h3 class="img-video-title">{{ video.title }}</h3>
+                <div class="imgVideoButtons">
+                  <a type="button" href="{{ video.url }}" class="tm-bg-pink tm-text-white tm-buy">Go to the YouTube</a>
+                  <a type="button" href="{% url 'view_video' video.id %}" class="tm-bg-pink tm-text-white tm-buy">Go to download</a>
+                </div>
               </div>
-            </div>
-          </figure>
+            </figure>
+          </div>
         </div>
+        {% endfor %}
       </div>
-      {% endfor %}
-    </div>
-
+    </center>
 
 
       <div class="row">

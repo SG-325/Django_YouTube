@@ -225,6 +225,10 @@ a:hover, a:focus, a.active {
 }
 .video-name-content h2{
     color: white;
+    white-space: nowrap; 
+    width: 450px;
+    overflow: hidden;
+    text-overflow: ellipsis; 
 }
 .video-input{
        margin-top: 10%;

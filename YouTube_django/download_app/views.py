@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from .models import NewMP3
 from django.conf import settings
 from isodate import parse_duration
+from django.contrib import messages
 from pytube import YouTube
 import youtube_dl
 import os
@@ -19,9 +20,8 @@ def home(request):
     global videos
     videos.clear()
 
-    if os.path.exists('download_app'):
-        os.chdir('download_app/static/download_app/songs')
-    # os.chdir(f"{os.getcwd()}/download_app/static/download_app/songs")
+    if os.path.exists('media'):
+        os.chdir('media/songs')
 
     while os.listdir():
       file = f"{os.getcwd()}/{os.listdir()[0]}"
@@ -32,14 +32,24 @@ def home(request):
         search_url = 'https://www.googleapis.com/youtube/v3/search'
         video_url = 'https://www.googleapis.com/youtube/v3/videos'
 
-        search_params = {
-            'part':'snippet',
-            'q':request.POST['name'],
-            'key':settings.YOUTUBE_DATA_API_KEY,
-            'type':'video',
-            'maxResults':39,
-        }
-        
+        if request.POST['name'][:8] == "https://":
+            search_params = {
+                'part':'snippet',
+                'q':request.POST['name'],
+                'key':settings.YOUTUBE_DATA_API_KEY,
+                'type':'video',
+                'maxResults':1,
+            }
+            
+        else:
+            search_params = {
+                'part':'snippet',
+                'q':request.POST['name'],
+                'key':settings.YOUTUBE_DATA_API_KEY,
+                'type':'video',
+                'maxResults':39,
+            }
+            
         response = requests.get(search_url, params=search_params)
         
         results = response.json()['items']
@@ -119,8 +129,8 @@ def view_video(request, pk):
             }]
         }
 
-    if os.path.exists('download_app'):
-        os.chdir('download_app/static/download_app/songs')
+    if os.path.exists('media'):
+        os.chdir('media/songs')
 
     with youtube_dl.YoutubeDL(options) as ydl:
         ydl.download([video['url']])
@@ -135,26 +145,6 @@ def view_video(request, pk):
         
         if end_time == "":
             end_time = video['duration']
-
-        # index_1 = end_time.find(":")
-        # if index_1 != -1:
-        #     index_2 = end_time[index_1:].find(":")
-
-        # print("index_1 =", index_1)
-        # print("index_2 =", index_2)
-        
-        # elif len(end_time) == 8 and (int(end_time[:2])*3600 + int(end_time[3:5])*60 + int(end_time[6:])) > video['duration']:
-        #     end_time = video['duration']
-        
-        # elif len(end_time) <= 5:
-        #     index = end_time.find(":")
-        #     s = int(end_time[:index])*60 + int(end_time[index+1:])
-        #     if s >= video['duration']:
-        #         end_time = video['duration']
-        
-        # elif len(end_time) <= 2 and (int(end_time)) > video['duration']:
-        #     end_time = video['duration']
-
 
         os.system(f"ffmpeg -i {video['title']}.mp3 -ss {start_time} -t {end_time} {video['title']}_cut.mp3")
         os.remove(f"{video['title']}.mp3")
