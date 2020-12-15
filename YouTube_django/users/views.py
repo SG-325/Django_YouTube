@@ -12,6 +12,7 @@ import os
 # Create your views here.
 
 def user_register(request):
+    form = UserRegisterForm()
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
@@ -19,19 +20,17 @@ def user_register(request):
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
             user = authenticate(request,username=username,password=password)
-
             if not user is None:
                 login(request,user)
-
             messages.add_message(request, messages.SUCCESS, "User created successfully")
-
             return redirect("login")
         else:
             messages.add_message(request, messages.SUCCESS, "Failed to create user. Please try again")
+            form_1 = form.errors
+            return render(request, 'registration/user_register.html', {'form': form, "form_1":form_1})
 
-
-    form = UserRegisterForm()
     return render(request, 'registration/user_register.html', {'form': form})
+
 
 
 @login_required(login_url="login")

@@ -146,6 +146,7 @@ def view_video(request, pk):
         if end_time == "":
             end_time = video['duration']
 
+        messages.add_message(request, messages.SUCCESS, "The song was split successfully.")
         os.system(f"ffmpeg -i {video['title']}.mp3 -ss {start_time} -t {end_time} {video['title']}_cut.mp3")
         os.remove(f"{video['title']}.mp3")
         os.rename(f"{video['title']}_cut.mp3", f"{video['title']}.mp3")

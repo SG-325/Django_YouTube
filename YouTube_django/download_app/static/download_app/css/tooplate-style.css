@@ -182,7 +182,7 @@ a:hover, a:focus, a.active {
 .todo-list{
     width: 70%;
     height: 50%;
-    transform: translate(18%, -30%);
+    transform: translate(18%, -35%);
     background: #b35e6c;
     padding: 20px;
     border-radius: 20px;
